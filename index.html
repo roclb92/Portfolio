@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Roc Photography</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #111;
+      color: white;
+      text-align: center;
+    }
+
+    header {
+      padding: 20px;
+      font-size: 28px;
+      letter-spacing: 2px;
+    }
+
+    .buttons {
+      margin: 20px;
+    }
+
+    button {
+      margin: 5px;
+      padding: 10px 15px;
+      border: none;
+      cursor: pointer;
+      background: #333;
+      color: white;
+      border-radius: 5px;
+    }
+
+    button:hover {
+      background: #555;
+    }
+
+    .upload-container {
+      margin: 20px;
+    }
+
+    .gallery {
+      display: none;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 15px;
+      padding: 20px;
+    }
+
+    .gallery.active {
+      display: grid;
+    }
+
+    .gallery img {
+      width: 100%;
+      height: 250px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+
+  </style>
+</head>
+<body>
+
+<header>Roc Photography</header>
+
+<div class="buttons">
+  <button onclick="showGallery('landscape')">Landscapes</button>
+  <button onclick="showGallery('portraits')">Portraits</button>
+  <button onclick="showGallery('events')">Events</button>
+</div>
+
+<div class="upload-container">
+  <input type="file" id="imageUpload" accept="image/*" multiple>
+  <br><br>
+  <select id="categorySelect">
+    <option value="landscape">Landscapes</option>
+    <option value="portraits">Portraits</option>
+    <option value="events">Events</option>
+  </select>
+</div>
+
+<div id="landscape" class="gallery active"></div>
+<div id="portraits" class="gallery"></div>
+<div id="events" class="gallery"></div>
+
+<script>
+  const upload = document.getElementById('imageUpload');
+  const categorySelect = document.getElementById('categorySelect');
+
+  upload.addEventListener('change', function() {
+    const files = this.files;
+    const category = categorySelect.value;
+    const gallery = document.getElementById(category);
+
+    for (let i = 0; i < files.length; i++) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const img = document.createElement('img');
+        img.src = e.target.result;
+        gallery.appendChild(img);
+      }
+      reader.readAsDataURL(files[i]);
+    }
+  });
+
+  function showGallery(category) {
+    const galleries = document.querySelectorAll('.gallery');
+    galleries.forEach(g => g.classList.remove('active'));
+    document.getElementById(category).classList.add('active');
+  }
+</script>
+
+</body>
+</html>
