@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>My Photography Portfolio</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #111;
+      color: white;
+      text-align: center;
+    }
+
+    header {
+      padding: 20px;
+      font-size: 28px;
+      letter-spacing: 2px;
+    }
+
+    .upload-container {
+      margin: 20px;
+    }
+
+    input[type="file"] {
+      padding: 10px;
+      background: #222;
+      color: white;
+      border: none;
+      cursor: pointer;
+    }
+
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 15px;
+      padding: 20px;
+    }
+
+    .gallery img {
+      width: 100%;
+      height: 250px;
+      object-fit: cover;
+      cursor: pointer;
+      border-radius: 8px;
+      transition: transform 0.3s ease;
+    }
+
+    .gallery img:hover {
+      transform: scale(1.05);
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 10;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.9);
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal img {
+      max-width: 90%;
+      max-height: 90%;
+      border-radius: 10px;
+    }
+
+    .modal.active {
+      display: flex;
+    }
+
+  </style>
+</head>
+<body>
+
+<header>My Photography Portfolio</header>
+
+<div class="upload-container">
+  <input type="file" id="imageUpload" accept="image/*" multiple>
+</div>
+
+<div class="gallery" id="gallery"></div>
+
+<div class="modal" id="modal">
+  <img id="modalImg">
+</div>
+
+<script>
+  const upload = document.getElementById('imageUpload');
+  const gallery = document.getElementById('gallery');
+  const modal = document.getElementById('modal');
+  const modalImg = document.getElementById('modalImg');
+
+  upload.addEventListener('change', function() {
+    const files = this.files;
+    for (let i = 0; i < files.length; i++) {
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const img = document.createElement('img');
+        img.src = e.target.result;
+        img.onclick = function() {
+          modal.classList.add('active');
+          modalImg.src = this.src;
+        }
+        gallery.appendChild(img);
+      }
+      reader.readAsDataURL(files[i]);
+    }
+  });
+
+  modal.onclick = function() {
+    modal.classList.remove('active');
+  }
+</script>
+
+</body>
+</html>
